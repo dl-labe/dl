@@ -1,0 +1,28 @@
+﻿"import tensorflow as tf
+from tensorflow import keras
+import numpy as np
+
+
+(x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
+
+
+
+x_train = tf.keras.applications.resnet.preprocess_input(x_train)
+x_test = tf.keras.applications.resnet.preprocess_input(x_test)
+
+
+base_model = tf.keras.applications.resnet50.ResNet50(include_top=True, weights=None,classes=10)
+
+
+model = tf.keras.Sequential()
+model.add(tf.keras.layers.Resizing(224, 224))
+model.add(base_model)
+
+
+model.compile(loss='sparse_categorical_crossentropy', optimizer='adam',
+metrics=['accuracy'])
+model.fit(x_train, y_train, epochs=10, batch_size=64)
+
+
+loss, acc = model.evaluate(x_test, y_test)
+print(f""\nResNet accuracy: {(acc * 100):.2f}%"")"
